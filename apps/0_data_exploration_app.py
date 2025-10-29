@@ -4,7 +4,7 @@ __generated_with = "0.15.1"
 app = marimo.App(width="columns")
 
 
-@app.cell(column=0, hide_code=True)
+@app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""# `Real data` exploration""")
     return
@@ -57,6 +57,18 @@ def _(fetch_california_housing, load_diabetes):
     df_california = fetch_california_housing(as_frame=True)
     df_diabetes = load_diabetes(as_frame=True)
     return df_california, df_diabetes
+
+
+@app.cell
+def _(df_california):
+    df_california.target.describe()
+    return
+
+
+@app.cell
+def _(df_california):
+    df_california.target.hist()
+    return
 
 
 @app.cell(hide_code=True)
@@ -249,7 +261,7 @@ def _(df, dropdown_df, np, pd, plt, sns):
     return
 
 
-@app.cell(column=1)
+@app.cell
 def _():
     return
 
