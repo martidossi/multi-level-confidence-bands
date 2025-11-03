@@ -1,7 +1,7 @@
 import marimo
 
 __generated_with = "0.17.6"
-app = marimo.App(width="medium")
+app = marimo.App()
 
 
 @app.cell(hide_code=True)
@@ -15,11 +15,7 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    This notebook details the process of **selecting data points** (houses) for inclusion in the survey and preparing the corresponding **experimental interface**. To see the `code` behind, you can click on the “Show code” toggle button in the top right corner of the app interface:
-
-    <img src="https://raw.githubusercontent.com/martidossi/multi-level-confidence-bands/main/pics/see_code.png" width="300">
-
-    ⚠️ _**Note**: this notebook is best viewed on a desktop screen for full functionality and layout, some elements may not display properly on mobile._
+    This notebook details the process of **selecting data points** (houses) for inclusion in the survey and preparing the corresponding **experimental interface**.
     """)
     return
 
@@ -105,8 +101,15 @@ def _():
 
 @app.cell
 def _(os, sys):
-    sys.path.append(os.path.abspath("src/"))
-    from utils import calculate_coverage, get_conformalized_interval
+    if os.environ.get("PYODIDE") == "1":
+        # Running in the browser (GitHub Pages)
+        from pyodide.http import open_url
+        src = open_url("https://martidossi.github.io/multi-level-confidence-bands/src/utils.py").read()
+        exec(src, globals())
+    else:
+        # Running locally (e.g., in VS Code or Jupyter)
+        sys.path.append(os.path.abspath("src/"))
+        from utils import calculate_coverage, get_conformalized_interval
     return (get_conformalized_interval,)
 
 
